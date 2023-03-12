@@ -1,0 +1,120 @@
+{
+
+    "name": "Toy Factory",
+    "ip": "0.0.0.0",
+    "port": 8765,
+
+    "buttons": [
+        {
+            "name": "emergencyStop",
+            "label": "Emergency Stop",
+            "style": { "background": "red", "border-color": "darkred" }
+        },
+        {
+            "name": "startConveyor",
+            "label": "Start Conveyor",
+            "style": { "background": "lightgreen", "border-color": "green" }
+        },
+        {
+            "name": "stopConveyor",
+            "label": "Stop Conveyor",
+            "style": { "background": "red", "border-color": "darkred" }
+        }
+    ],
+
+    "agents": [ 
+        {
+            "definition": "defs/conveyor_belt.json",
+            "style": { "fill": "none", "stroke": "none" },
+            "position": { "x": 540, "y": 50, "theta": 0 }
+        },
+        {
+            "definition": "defs/conveyor_gear.json",
+            "style": { "fill": "grey", "stroke": "none" },
+            "position": { "x": 490, "y": 110, "theta": 0 }
+        },
+        {
+            "definition": "defs/conveyor_gear.json",
+            "style": { "fill": "grey", "stroke": "none" },
+            "position": { "x": 290, "y": 110, "theta": 0 }
+        },
+        {
+            "definition": "defs/conveyor_gear.json",
+            "style": { "fill": "grey", "stroke": "none" },
+            "position": { "x": 90, "y": 110, "theta": 0 }
+        },
+        {
+            "definition": "defs/building_block.json",
+            "style": {"fill": "orange", "stroke": "none"},
+            "position": { "x": 540, "y": 45, "theta": 0 }
+        },
+        {
+            "definition": "defs/arm_base_rail.json",
+            "style": { "fill": "lightblue", "stroke": "none" },
+            "position": { "x": 0, "y": -310, "theta": 0 }
+        },
+        {
+            "definition": "defs/arm_base_link.json",
+            "style": { "fill": "grey", "stroke": "none" },
+            "position": { "x": 0, "y": -260, "theta": 0 }
+        },
+        {
+            "definition": "defs/arm_shoulder_link.json",
+            "style": { "fill": "grey", "stroke": "none" },
+            "position": { "x": 0, "y": -260, "theta": 0 }
+        },
+        {
+            "definition": "defs/arm_elbow_link.json",
+            "style": { "fill": "grey", "stroke": "none" },
+            "position": { "x": 0, "y": -100, "theta": 0 }
+        },
+        {
+            "definition": "defs/arm_wrist_link.json",
+            "style": { "fill": "grey", "stroke": "none" },
+            "position": { "x": 0, "y": 45, "theta": 0 }
+        }
+    ],
+
+    "references": [
+    ],
+
+    "statics": [
+        {
+            "style": { "fill": "darkblue", "stroke": "none" },
+            "shape": [
+                { "x": -550, "y": -330 },
+                { "x": -550,  "y": 330 },
+                { "x": -540,  "y": 330 },
+                { "x": -540, "y": -330 }
+            ]
+        },
+        {
+            "style": { "fill": "darkblue", "stroke": "none" },
+            "shape": [
+                { "x": 550, "y": -330 },
+                { "x": 550,  "y": 330 },
+                { "x": 540,  "y": 330 },
+                { "x": 540, "y": -330 }
+            ]
+        },
+        {
+            "style": { "fill": "darkblue", "stroke": "none" },
+            "shape": [
+                { "x": -550, "y": 330 },
+                { "x": 550,  "y": 330 },
+                { "x": 550,  "y": 320 },
+                { "x": -550, "y": 320 }
+            ]
+        },
+        {
+            "style": { "fill": "darkblue", "stroke": "none" },
+            "shape": [
+                { "x": -550, "y": -330 },
+                { "x": 550,  "y": -330 },
+                { "x": 550,  "y": -320 },
+                { "x": -550, "y": -320 }
+            ]
+        }
+    ]
+
+}

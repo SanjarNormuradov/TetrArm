@@ -1,0 +1,19 @@
+{
+    "name": "armBaseLink",
+    "type": "dynamic",
+    "description": "Robot Arm Base Link",
+    "shape": [
+        { "x": -50, "y": -30 },
+        { "x": -50, "y": -50 },
+        { "x": 50, "y": -50 },
+        { "x": 50, "y": -30 }
+    ],
+    "friction": {
+      "collision": 1,
+      "linear": 1,
+      "rotational": 1
+    },
+    "sensors": [],
+    "mass": 1,    
+    "controller": "lib/arm_base_link.so"
+}
