@@ -1,20 +1,25 @@
 {
-    "name": "conveyorBelt",
-    "type": "static",
-    "description": "Conveyor Belt",
-    "shape": [],
-    "friction": {
-      "collision": 1,
-      "linear": 1,
-      "rotational": 1
-    },
-    "sensors": [
-      {
-        "type": "range",
-        "location": { "x": -450, "y": -10 },
-        "direction": 0
-      }
-    ],
-    "mass": 1,    
-    "controller": "lib/conveyor_belt.so"
+  "name": "conveyorBelt",
+  "type": "static",
+  "description": "Conveyor Belt",
+  "shape": [
+    { "x": 0, "y": -5 },
+    { "x": -450, "y": -5 },
+    { "x": -450, "y": 5 },
+    { "x": 0, "y": 5 }
+  ],
+  "friction": {
+    "collision": 5,
+    "linear": 100,
+    "rotational": 1
+  },
+  "sensors": [
+    {
+      "type": "range",
+      "location": { "x": -450, "y": -10 },
+      "direction": 0
+    }
+  ],
+  "mass": 1,    
+  "controller": "lib/conveyor_belt.so"
 }

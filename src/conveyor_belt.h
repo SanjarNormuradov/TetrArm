@@ -29,33 +29,39 @@ class conveyorBeltController : public Process, public AgentInterface {
             colours.push_back("lightgreen");
             colours.push_back("lightblue");
             colourSize = static_cast<int> (colours.size());
-            blockGenFreq = chrono::seconds(1);
+            blockGenFreq = chrono::seconds(3);
+            elapsedTime = high_resolution_clock::duration::zero();
+            prevGenRemain = high_resolution_clock::duration::zero();
+            processFirstStart = false;
         }
         void init() {
+            prevent_rotation();
             watch("stateEmergencyStop", [this](Event& e) {
-                cout << "[Conveyor Belt] Emergency Stop\n";
+                // cout << "[Conveyor Belt] Emergency Stop\n";
                 currState = "Emergency Stop";
-                e.stop_propagation();
+                if (processFirstStart) {
+                    currTime = chrono::high_resolution_clock::now();
+                    prevGenRemain = currTime - lastTime;
+                }
             });
             watch("stateStartConveyor", [this](Event& e) {
-                cout << "[Conveyor Belt] Start Conveyor\n";
+                // cout << "[Conveyor Belt] Start Conveyor\n";
                 currState = "Start Conveyor";
                 lastTime = chrono::high_resolution_clock::now();
-                e.stop_propagation();
+                processFirstStart = true;
             });
             watch("stateStopConveyor", [this](Event& e) {
-                cout << "[Conveyor Belt] Stop Conveyor\n";
+                // cout << "[Conveyor Belt] Stop Conveyor\n";
                 currState = "Stop Conveyor";
-                e.stop_propagation();
+                currTime = chrono::high_resolution_clock::now();
+                prevGenRemain = currTime - lastTime;
             });
             watch("stateSensorStopConveyor", [this](Event& e) {
-                cout << "[Conveyor Belt] Sensor Stop Conveyor\n";
+                // cout << "[Conveyor Belt] Sensor Stop Conveyor\n";
                 currState = "Sensor Stop Conveyor";
-                e.stop_propagation();
+                currTime = chrono::high_resolution_clock::now();
+                prevGenRemain = currTime - lastTime;
             });
-            cout << "Adding Block...\n";
-            add_agent("buildingBlock", -100, -100, 0, {{"fill", "black"}});
-            cout << "Block Added\n";
         }
         void start() {
             currValue = sensor_value(0);
@@ -63,8 +69,8 @@ class conveyorBeltController : public Process, public AgentInterface {
         }
         void update() {
             currValue = sensor_value(0);
-            if (currValue < 2) {
-                if (prevValue > 2) {
+            if (currValue < 8) {
+                if (prevValue > 8) {
                     // cout << "[Conveyor Belt] Sensor Detected Object\n";
                     emit(Event("Sensor Detected Object"));
                 }
@@ -73,15 +79,22 @@ class conveyorBeltController : public Process, public AgentInterface {
                 emit(Event("Sensor Scanning..."));
                 if (currState == "Start Conveyor") {
                     currTime = chrono::high_resolution_clock::now();
-                    if ((currTime - lastTime) > blockGenFreq) {
+                    elapsedTime = (currTime - lastTime) + prevGenRemain;
+                    if (elapsedTime > blockGenFreq) {
                         mt19937 gen(chrono::system_clock::now().time_since_epoch().count());
                         uniform_int_distribution<int> colourDist(0, colourSize - 1);
                         colour_id = colourDist(gen);
                         colour = colours[colour_id];
-                        cout << "Adding Block...\n";
-                        add_agent("buildingBlock", 0, 0, 0, {{"fill", colour}});
-                        cout << "Block Added\n";
+                        // cout << "[Conveyor Belt] Adding Block...\n";
+                        Agent& agnt = add_agent("buildingBlock", 540, 45, 0, {{"fill", colour}});
+                        // cout << "[Conveyor Belt] Block Added. Colour: " << colour << endl;
+                        emit(Event("Block Added", {
+                            {"colour", colour},
+                            {"block_id", agnt.get_id()}
+                        }));
+                        // cout << "Block Added\n";
                         lastTime = chrono::high_resolution_clock::now();
+                        prevGenRemain = high_resolution_clock::duration::zero();
                     }
                 }
             }
@@ -98,19 +111,16 @@ class conveyorBeltController : public Process, public AgentInterface {
         string colour, currState;
         chrono::high_resolution_clock::time_point lastTime,
                                                   currTime;
-        chrono::high_resolution_clock::duration blockGenFreq;
+        chrono::high_resolution_clock::duration blockGenFreq, elapsedTime, prevGenRemain;
+        bool processFirstStart;
 };
 
 class conveyorBelt : public Agent {
     public:
         conveyorBelt(json spec, World& world) : Agent(spec, world) {
             add_process(cbCtrl);
-            decorate("<path d='M 0 0 H -450 A 60 60 0 1 0 -450 120 H 0' stroke='black' stroke-width='10' style='fill: none'/>");
+            decorate("<path d='M -450 0 A 60 60 0 1 0 -450 120 H 0' stroke='black' stroke-width='10' style='fill: none'/>");
             prevent_rotation();
-        }
-        void update() {
-            // add_agent("buildingBlock", -100, -100, 0, {{"fill", "black"}});
-            Agent::update();
         }
     private:
         conveyorBeltController cbCtrl;

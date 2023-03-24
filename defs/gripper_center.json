@@ -1,0 +1,15 @@
+{
+  "name": "gripperCenter",
+  "type": "dynamic",
+  "description": "Object Gripper Center to provide omni directional movement/velocity",
+  "shape": "omni",
+  "radius": 2,
+  "friction": {
+    "collision": 1,
+    "linear": 1,
+    "rotational": 600
+  },
+  "sensors": [],
+  "mass": 1,    
+  "controller": "lib/gripper_center.so"
+}

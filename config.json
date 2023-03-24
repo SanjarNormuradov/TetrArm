@@ -25,7 +25,7 @@
     "agents": [ 
         {
             "definition": "defs/conveyor_belt.json",
-            "style": { "fill": "none", "stroke": "none" },
+            "style": { "fill": "black", "stroke": "none" },
             "position": { "x": 540, "y": 50, "theta": 0 }
         },
         {
@@ -44,38 +44,33 @@
             "position": { "x": 90, "y": 110, "theta": 0 }
         },
         {
-            "definition": "defs/building_block.json",
-            "style": {"fill": "orange", "stroke": "none"},
-            "position": { "x": 540, "y": 45, "theta": 0 }
-        },
-        {
-            "definition": "defs/arm_base_rail.json",
-            "style": { "fill": "lightblue", "stroke": "none" },
-            "position": { "x": 0, "y": -310, "theta": 0 }
-        },
-        {
-            "definition": "defs/arm_base_link.json",
+            "definition": "defs/rail_road.json",
             "style": { "fill": "grey", "stroke": "none" },
-            "position": { "x": 0, "y": -260, "theta": 0 }
+            "position": { "x": 0, "y": -290, "theta": 0 }
         },
         {
-            "definition": "defs/arm_shoulder_link.json",
+            "definition": "defs/object_gripper.json",
             "style": { "fill": "grey", "stroke": "none" },
-            "position": { "x": 0, "y": -260, "theta": 0 }
+            "position": { "x": 0, "y": -282.5, "theta": 0 }
         },
         {
-            "definition": "defs/arm_elbow_link.json",
+            "definition": "defs/gripper_center.json",
             "style": { "fill": "grey", "stroke": "none" },
-            "position": { "x": 0, "y": -100, "theta": 0 }
+            "position": { "x": 0, "y": -288, "theta": 0 }
         },
         {
-            "definition": "defs/arm_wrist_link.json",
-            "style": { "fill": "grey", "stroke": "none" },
-            "position": { "x": 0, "y": 45, "theta": 0 }
+            "definition": "defs/toy_box.json",
+            "style": { "fill": "red", "stroke": "none" },
+            "position": { "x": -250, "y": 300, "theta": 0 }
         }
     ],
 
     "references": [
+        {
+            "definition": "defs/building_block.json",
+            "style": {"fill": "orange", "stroke": "none"},
+            "position": { "x": 540, "y": 45, "theta": 0 }
+        }
     ],
 
     "statics": [
@@ -113,6 +108,15 @@
                 { "x": 550,  "y": -330 },
                 { "x": 550,  "y": -320 },
                 { "x": -550, "y": -320 }
+            ]
+        },
+        {
+            "style": { "fill": "lightblue", "stroke": "none" },
+            "shape": [
+                { "x": -540, "y": -320 },
+                { "x": -540, "y": -310 },
+                { "x": 540, "y": -310 },
+                { "x": 540, "y": -320 }
             ]
         }
     ]

@@ -1,0 +1,19 @@
+{
+  "name": "objectGripper",
+  "type": "dynamic",
+  "description": "Object Gripper",
+  "shape": [
+    { "x": -15, "y": 0 },
+    { "x": -15, "y": 10 },
+    { "x": 15, "y": 10 },
+    { "x": 15, "y": 0 }
+  ],
+  "friction": {
+    "collision": 1,
+    "linear": 1,
+    "rotational": 600
+  },
+  "sensors": [],
+  "mass": 1,    
+  "controller": "lib/object_gripper.so"
+}

@@ -17,17 +17,11 @@ class EmergencyStop : public State, public AgentInterface {
         }
         void during() {
             // cout << "Emergency Stop During\n";
-            // if (!transitionEvent.empty()) {
-            //     emit(Event(transitionEvent));
-            //     cout << "Event emitted\n";
-            //     transitionEvent.clear();
-            // }
             track_velocity(0, 0, 0, 100000);
         }
         void exit(const Event& e) {
             // cout << "Emergency Stop Exit\n";
         }
-        // string transitionEvent;
 };
 
 class StartConveyor : public State, public AgentInterface {
@@ -39,17 +33,11 @@ class StartConveyor : public State, public AgentInterface {
         }
         void during() {
             // cout << "Start Conveyor During\n";
-            // if (!transitionEvent.empty()) {
-            //     emit(Event(transitionEvent));
-            //     cout << "Event emitted\n";
-            //     transitionEvent.clear();
-            // }
             track_velocity(0, -0.3, 0, 100000);
         }
         void exit(const Event& e) {
             // cout << "Start Conveyor Exit\n";
         }
-        // string transitionEvent;
 };
 
 class StopConveyor : public State, public AgentInterface {
@@ -61,17 +49,11 @@ class StopConveyor : public State, public AgentInterface {
         }
         void during() {
             // cout << "Stop Conveyor During\n";
-            // if (!transitionEvent.empty()) {
-            //     emit(Event(transitionEvent));
-            //     cout << "Event emitted\n";
-            //     transitionEvent.clear();
-            // }
             track_velocity(0, 0, 0, 100000);
         }
         void exit(const Event& e) {
             // cout << "Stop Conveyor Exit\n";
         }
-        // string transitionEvent;
 };
 
 class SensorStopConveyor : public State, public AgentInterface {
@@ -83,17 +65,11 @@ class SensorStopConveyor : public State, public AgentInterface {
         }
         void during() {
             // cout << "Sensor Stop Conveyor During\n";
-            // if (!transitionEvent.empty()) {
-            //     emit(Event(transitionEvent));
-            //     cout << "Event emitted\n";
-            //     transitionEvent.clear();
-            // }
             track_velocity(0, 0, 0, 100000);
         }
         void exit(const Event& e) {
             // cout << "Sensor Stop Conveyor Exit\n";
         }
-        // string transitionEvent;
 };
 
 class conveyorGearSM : public StateMachine, public AgentInterface {
@@ -109,51 +85,45 @@ class conveyorGearSM : public StateMachine, public AgentInterface {
             add_transition("Emergency Stop: !SC -> ES", stop_conveyor, emergency_stop);
             add_transition("Emergency Stop: SSC -> ES", sensor_stop_conveyor, emergency_stop);
             sensorScanRead = false;
+            sensorDetectedObject = false;
         }
         void init() {
-            // cout << "StateMachine init\n";
             // cout << "Initial State: " << _initial->name() << "; Currrent State: " << ((_current == NULL) ? "none" : _current->name()) << ";\n";
             watch("button_click", [this](const Event& e) {
                 // cout << "\nButton is Clicked\n";
                 string clickedButton = e.value()["value"];
                 // e.stop_propagation(); It stops handling following events, so 1st gear will be updated and the other 2 not
-                // cout << clickedButton << endl;
                 string currentState = (_current == NULL) ? _initial->name() : _current->name();
                 // cout << "Clicked Button: Name: " << clickedButton << "; Current State: " << currentState << ";\n";
                 // cout << "Initial State: " << _initial->name() << "; Currrent State: " << _current->name() << ";\n";
-
                 if ((currentState == "Emergency Stop") && (clickedButton == "startConveyor")) {
                     // cout << "Start Conveyor: ES -> SC\n";
-                    // emergency_stop.transitionEvent = "Start Conveyor: ES -> SC";
-                    emit(Event("Start Conveyor: ES -> SC"));
-                    sensorScanRead = false;
+                    if (!sensorDetectedObject) {
+                        emit(Event("Start Conveyor: ES -> SC"));
+                        sensorScanRead = false;
+                    }
                 } 
                 else if ((currentState == "Start Conveyor") && (clickedButton == "stopConveyor")) {
                     // cout << "Stop Conveyor: SC -> !SC\n";
-                    // start_conveyor.transitionEvent = "Stop Conveyor: SC -> !SC";
                     emit(Event("Stop Conveyor: SC -> !SC"));
                     emit(Event("Stop Blocks"));
                 } 
                 else if ((currentState == "Stop Conveyor") && (clickedButton == "startConveyor")) {
                     // cout << "Start Conveyor: !SC -> SC\n";
-                    // stop_conveyor.transitionEvent = "Start Conveyor: !SC -> SC";
                     emit(Event("Start Conveyor: !SC -> SC"));
                     sensorScanRead = false;        
                 }
                 else if ((currentState == "Start Conveyor") && (clickedButton == "emergencyStop")) {
                     // cout << "Emergency Stop: SC -> ES\n";
-                    // start_conveyor.transitionEvent = "Emergency Stop: SC -> ES";
                     emit(Event("Emergency Stop: SC -> ES"));      
                     emit(Event("Stop Blocks"));           
                 } 
                 else if ((currentState == "Stop Conveyor") && (clickedButton == "emergencyStop")) {
                     // cout << "Emergency Stop: !SC -> ES\n";
-                    // stop_conveyor.transitionEvent = "Emergency Stop: !SC -> ES";
                     emit(Event("Emergency Stop: !SC -> ES"));             
                 }
                 else if ((currentState == "Sensor Stop Conveyor") && (clickedButton == "emergencyStop")) {
                     // cout << "Emergency Stop: SSC -> ES\n";
-                    // stop_conveyor.transitionEvent = "Emergency Stop: SSC -> ES";
                     emit(Event("Emergency Stop: SSC -> ES"));             
                 }
             });
@@ -161,6 +131,7 @@ class conveyorGearSM : public StateMachine, public AgentInterface {
                 string currentState = (_current == NULL) ? _initial->name() : _current->name();
                 if (currentState == "Start Conveyor") {
                     // cout << "[Conveyor Gear] Sensor Detected Object\n";
+                    sensorDetectedObject = true;
                     emit(Event("Sensor Stop Conveyor: SC -> SSC"));
                     emit(Event("Stop Blocks"));
                 }
@@ -177,17 +148,10 @@ class conveyorGearSM : public StateMachine, public AgentInterface {
                     sensorScanRead = true;
                 }
             });
+            watch("Block Added", [this](Event& e) {
+                sensorScanRead = false;
+            });
             StateMachine::init();
-        }
-        // void start() {
-        //     StateMachine::start();
-        //     cout << "StateMachine start\n";
-        //     cout << "Initial State: " << _initial->name() << "; Currrent State: " << _current->name() << ";\n";
-        // }
-        void update() {
-            // cout << "\nStateMachine update\n";
-            // cout << "Initial State: " << _initial->name() << "; Currrent State: " << _current->name() << ";\n";
-            StateMachine::update();
         }
 
     private:
@@ -195,7 +159,7 @@ class conveyorGearSM : public StateMachine, public AgentInterface {
         StartConveyor start_conveyor;
         StopConveyor stop_conveyor;
         SensorStopConveyor sensor_stop_conveyor;
-        bool sensorScanRead;
+        bool sensorScanRead, sensorDetectedObject;
 };
 
 class conveyorGear : public Agent {

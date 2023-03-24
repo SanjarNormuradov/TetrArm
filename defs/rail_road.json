@@ -1,0 +1,19 @@
+{
+  "name": "railRoad",
+  "type": "dynamic",
+  "description": "Object Gripper Rail Road",
+  "shape": [
+      { "x": -50, "y": 0 },
+      { "x": -50, "y": -20 },
+      { "x": 50, "y": -20 },
+      { "x": 50, "y": 0 }
+  ],
+  "friction": {
+    "collision": 1,
+    "linear": 1,
+    "rotational": 600
+  },
+  "sensors": [],
+  "mass": 1,    
+  "controller": "lib/rail_road.so"
+}
