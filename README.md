@@ -4,7 +4,7 @@
 
 
 ## Overview
-The initial goal of this project was to create a toy factory combining the popular game "Tetris" with a 3-DoF robotic arm to pich randmoly created figures from a conveyor and put them into a box where "Tetris" scenario happens. 
+The initial goal of this project was to create a toy factory combining the popular game "Tetris" with a 3-DoF robotic arm to pick from a conveyor randmoly created figures and put them into a box where "Tetris" scenario happens. 
 
 **But** due to limitations of time and methods provided by an emerging multi-everything simulator [ENVIRO](https://github.com/klavinslab/enviro), the current goal of the project has been shrinked to picking up a randomly-coloured block from the conveyor with a gripper and putting it to the box. As long as the block touches the bottom of the box, it disappears which shows how the toy factory thrives thanks to children's, and not only, endless desire to feed their imagination...
 
@@ -12,7 +12,7 @@ As for the control, there are 3 screen buttons (which names speak for themselves
 ![](/ENVIRO_ToyFactory.jpg)
 
 ## Challenges
-There were lots of challenges related to *logic* and *simulation environment-specific*.
+There were lots of challenges related to *simulation environment-specific* and *logic*.
 
 **Simulation environment-specific**
 
