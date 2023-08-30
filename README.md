@@ -42,11 +42,11 @@ Keeping in mind that the Docker container is already installed...
 First, clone the git repo with
 
 ```bash
-git clone https://github.com/SanjarNormuradov/EEP520_SWE_EmbApp/Assignments/Final_Project
+git clone https://github.com/SanjarNormuradov/TetrArm.git
 ```
 Second, start the docker image environment with (v1.5 is preferred, as later versions are unstable and earlier ones do not contain new methods for futher modifications)
 ```bash
-docker run -p80:80 -p8765:8765 -v $PWD/EE520_FinalProject:/source -it klavins/enviro:v1.5 bash
+docker run -p80:80 -p8765:8765 -v $PWD/TetrArm:/source -it klavins/enviro:v1.5 bash
 ```
 If this is the first time using this image file, it will be automatically downloaded.
 ## Run the Simulation
